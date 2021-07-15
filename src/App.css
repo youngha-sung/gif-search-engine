@@ -1,7 +1,10 @@
-.App {
-  text-align: center;
-}
+/*
+    Try to avoid adding styling here. Use Styled Components instead,
+    which is already a dependency of the app. Read more here:
 
-.giphy-gif {
-  cursor: pointer;
+    https://www.styled-components.com/docs
+*/
+
+* {
+  box-sizing: border-box;
 }

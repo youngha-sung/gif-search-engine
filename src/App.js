@@ -1,40 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 import './App.css';
 import Header from './components/header';
 import Search from './components/search';
 import Favorites from './components/favorites';
 
+const Wrapper = styled.div`
+    padding: 20px;
+`;
+
 function App() {
-    const [ favorites, setFavorites ] = useState([]);
-
-    React.useEffect(() => {
-        const data = localStorage.getItem('favorites');
-        const favorites = data ? JSON.parse(data) : [];
-        setFavorites(favorites)
-    }, [])
-
-    React.useEffect(() => {
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }, [ favorites ])
-
-    const handleGifClick = (gif) => {
-        setFavorites([ ...favorites, gif.id ]);
-    }
-
     return (
         <Router>
-            <div className='App'>
+            <Wrapper>
                 <Header />
                 <Switch>
                     <Route exact path='/'>
-                        <Search handleGifClick={handleGifClick} />
+                        <Search />
                     </Route>
                     <Route exact path='/favorites'>
-                        <Favorites handleGifClick={handleGifClick}/>
+                        <Favorites />
                     </Route>
                 </Switch>
-            </div>
+            </Wrapper>
         </Router>
     );
 }

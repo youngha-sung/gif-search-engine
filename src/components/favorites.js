@@ -1,23 +1,34 @@
-import React from 'react';
-import { Grid } from '@giphy/react-components';
+import React, { useState, useEffect } from 'react';
 import { GiphyFetch } from '@giphy/js-fetch-api/dist/index';
 import { GIPHY_API_KEY } from '../constants';
+import GiphyGrid from '../components/giphyGrid';
 
-function Favorites({ handleGifClick }) {
-    const data = localStorage.getItem('favorites');
-    const favorites = data ? JSON.parse(data) : [];
-    const gf = new GiphyFetch(GIPHY_API_KEY)
-    const gifs = () => gf.gifs(favorites);
+const gf = new GiphyFetch(GIPHY_API_KEY)
+
+function Favorites() {
+    const localData = JSON.parse(localStorage.getItem('favorites')) || {};
+    const [ favorites, setFavorites ] = useState(localData);
+    const [ key, setKey ] = useState('');
+
+    useEffect(() => {
+        const dateTime = Date.now();
+        const timestamp = Math.floor(dateTime / 1000);
+        setKey(timestamp);
+    }, [favorites]);
+
+    const handleGifClick = (gif) => {
+        const updatedFavorites = favorites.filter(x => x !== gif.id);
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        setFavorites(updatedFavorites);
+    }
+    const fetchGifs = () => gf.gifs(favorites);
 
     return (
-        <Grid
-            // key={searchKey}
-            columns={3}
-            width={800}
-            fetchGifs={gifs}
-            noLink='true'
-            hideAttribution='true'
-            onGifClick={(gif) => handleGifClick(gif)}
+        <GiphyGrid
+            fetchGifs={fetchGifs}
+            searchKey={key}
+            handleGifClick={handleGifClick}
+            overlayText='REMOVE'
         />
     );
 }

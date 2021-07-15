@@ -10,7 +10,7 @@ test('renders search form', () => {
 describe('Navigation', () => {
     test('Search link should link to search page', () => {
         render(<App />);
-        const link = screen.getByText("Search");
+        const link = screen.getByText("Search GIFs");
         fireEvent.click(link);
         const currentPath = window.location.pathname;
         expect(currentPath).toEqual("/");
@@ -18,21 +18,10 @@ describe('Navigation', () => {
 
     test('Favorites link should link to favorites page', () => {
         render(<App />);
-        const link = screen.getByText("Favorites");
+        const link = screen.getByText("My Favorites");
         fireEvent.click(link);
         const currentPath = window.location.pathname;
         expect(currentPath).toEqual("/favorites");
-    });
-});
-
-xdescribe('On form submission', () => {
-    test('should make api request', async () => {
-        render(<App />);
-        const input = screen.getByPlaceholderText("Search GIPHY");
-        fireEvent.change(input, { target: { value: 'What Happened Something GIF by Lucifer' } })
-
-        await waitFor(() => screen.getByRole('img'));
-        expect(screen.getByRole('img')).toBeInTheDocument();
     });
 });
 
